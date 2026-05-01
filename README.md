@@ -56,14 +56,28 @@ El archivo principal contiene toda la lógica necesaria para el prototipo:
 
 ## Vista Previa del Prototipo
 
+1. **Inicio**
+
+<img width="1366" height="768" alt="Parque100" src="https://github.com/user-attachments/assets/1945791f-5530-4a97-94dc-6387ec785fbc" />
+
+2. **Categorías**
+
+<img width="1366" height="768" alt="Parque100-2" src="https://github.com/user-attachments/assets/8a80dbfd-c61e-4ca7-a103-dbac7d293f5d" />
+
+3. **Perfil**
+
+<img width="1366" height="768" alt="Parque100-3" src="https://github.com/user-attachments/assets/ff935e81-692e-42c9-b84c-d63ad81c1807" />
+
+4. **Loggin**
+
+<img width="1366" height="768" alt="Parque100-4" src="https://github.com/user-attachments/assets/a23a5629-fbda-4a55-b648-aa949cbda1e5" />
 
 ---
 
 ## Autores
 **Miguel Fernando Cárdenas Alvear, Brandon Vergara, David Pardo, Jhon Salazar G.**  
-*Aprendices SENA - ADSO*
-*Ficha: 3235894  *
-*Barranquilla, Colombia*
+**Aprendices SENA - ADSO**
+**Ficha: 3235894**
 
 ---
 
