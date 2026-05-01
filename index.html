@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Parque 100</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkR4j8DfsMZdE2vnYFzdg3ShrqpEVUpiFcMA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  >
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["ui-sans-serif", "system-ui", "sans-serif"]
+          },
+          colors: {
+            stone: {
+              950: "#151515"
+            }
+          },
+          boxShadow: {
+            soft: "0 10px 35px rgba(0, 0, 0, 0.08)"
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-stone-100 text-stone-900">
+  <!-- Contenedor principal de la SPA -->
+  <div class="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col bg-stone-50 shadow-soft lg:my-6 lg:rounded-[2rem]">
+    <!-- Encabezado global fijo para mantener contexto de la tienda -->
+    <header class="sticky top-0 z-20 border-b border-stone-200 bg-stone-50/95 px-4 py-4 backdrop-blur lg:px-8">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs uppercase tracking-[0.35em] text-stone-500">Parque 100</p>
+          <h1 class="text-xl font-semibold">Tienda virtual</h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <nav class="hidden items-center gap-2 lg:flex" aria-label="Navegacion principal de escritorio">
+            <button type="button" class="nav-button active-nav rounded-2xl px-4 py-3 text-sm font-medium" data-target="home" aria-label="Inicio">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-house"></i>
+                Inicio
+              </span>
+            </button>
+            <button type="button" class="nav-button rounded-2xl px-4 py-3 text-sm font-medium" data-target="categories" aria-label="Categorías">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-layer-group"></i>
+                Categorías
+              </span>
+            </button>
+            <button type="button" class="nav-button rounded-2xl px-4 py-3 text-sm font-medium" data-target="cart" aria-label="Carrito">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Carrito
+              </span>
+            </button>
+            <button type="button" class="nav-button rounded-2xl px-4 py-3 text-sm font-medium" data-target="profile" aria-label="Perfil">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-user-gear"></i>
+                Perfil
+              </span>
+            </button>
+            <button type="button" class="nav-button rounded-2xl px-4 py-3 text-sm font-medium" data-target="login" aria-label="Iniciar sesión">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Iniciar sesión
+              </span>
+            </button>
+          </nav>
+          <button
+            id="headerCartButton"
+            class="relative flex h-11 w-11 items-center justify-center rounded-full border border-stone-300 bg-white text-stone-700 transition hover:bg-stone-100"
+            type="button"
+            aria-label="Ir al carrito"
+          >
+            <i class="fa-solid fa-cart-shopping text-lg"></i>
+            <span
+              id="headerCartCount"
+              class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-stone-900 px-1 text-[10px] font-semibold text-white"
+            >0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Área dinámica donde se muestran las secciones -->
+    <main class="mx-auto flex-1 w-full px-0 pb-24 lg:px-8 lg:pb-8">
+      <!-- Sección Inicio con buscador y productos destacados -->
+      <section id="view-home" data-view class="view-section space-y-6 px-4 pb-6 pt-4 lg:px-0">
+        <div class="sticky top-[97px] z-10 bg-stone-50 pb-3 lg:top-[97px]">
+          <label for="searchInput" class="sr-only">Buscar productos</label>
+          <div class="flex items-center gap-3 rounded-2xl border border-stone-300 bg-white px-4 py-3 shadow-sm">
+            <i class="fa-solid fa-magnifying-glass text-stone-400"></i>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Buscar en la tienda"
+              class="w-full bg-transparent text-sm outline-none placeholder:text-stone-400"
+            >
+          </div>
+        </div>
+
+        <article class="rounded-3xl bg-gradient-to-br from-stone-900 via-stone-800 to-stone-700 p-5 text-white">
+          <p class="text-xs uppercase tracking-[0.35em] text-stone-300">Compra rápida</p>
+          <h2 class="mt-2 text-2xl font-semibold">Productos destacados del día</h2>
+          <p class="mt-2 text-sm text-stone-200">Maquetación funcional para navegar, agregar productos y simular una compra.</p>
+        </article>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-semibold">Destacados</h2>
+            <p class="text-sm text-stone-500">Selecciona productos y agrégalos al carrito.</p>
+          </div>
+          <span id="searchResultLabel" class="rounded-full bg-stone-200 px-3 py-1 text-xs font-medium text-stone-600">8 productos</span>
+        </div>
+
+        <div id="homeProducts" class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
+      </section>
+
+      <!-- Sección Categorías con acceso visual a tipos de producto -->
+      <section id="view-categories" data-view class="view-section hidden space-y-5 px-4 pb-6 pt-4 lg:px-0">
+        <div>
+          <h2 class="text-xl font-semibold">Categorías</h2>
+          <p class="mt-1 text-sm text-stone-500">Explora el catálogo por grupos principales.</p>
+        </div>
+
+        <div id="categoriesGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
+
+        <article class="rounded-3xl border border-dashed border-stone-300 bg-white p-5">
+          <h3 class="text-base font-semibold">Vista de prototipo</h3>
+          <p class="mt-2 text-sm leading-6 text-stone-500">
+            Esta sección representa cómo se organizaría el acceso por categorías dentro de la tienda Parque 100.
+          </p>
+        </article>
+      </section>
+
+      <!-- Sección Carrito con productos agregados y resumen de compra -->
+      <section id="view-cart" data-view class="view-section hidden space-y-5 px-4 pb-6 pt-4 lg:px-0">
+        <div>
+          <h2 class="text-xl font-semibold">Carrito de compras</h2>
+          <p class="mt-1 text-sm text-stone-500">Revisa tus productos antes de continuar.</p>
+        </div>
+
+        <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+          <div id="cartContent" class="space-y-4"></div>
+
+          <aside class="lg:sticky lg:top-28">
+            <article class="rounded-3xl bg-stone-900 p-5 text-white">
+              <div class="flex items-center justify-between text-sm text-stone-300">
+                <span>Subtotal</span>
+                <span id="subtotalValue">$0</span>
+              </div>
+              <div class="mt-3 flex items-center justify-between text-sm text-stone-300">
+                <span>Domicilio</span>
+                <span id="shippingValue">$4.000</span>
+              </div>
+              <div class="mt-4 border-t border-stone-700 pt-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-base font-medium">Total</span>
+                  <span id="totalValue" class="text-2xl font-semibold">$0</span>
+                </div>
+              </div>
+              <button
+                id="continueButton"
+                type="button"
+                class="mt-5 w-full rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-stone-900 transition hover:bg-stone-200"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-credit-card"></i>
+                  Continuar
+                </span>
+              </button>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <!-- Sección Perfil con información del usuario autenticado -->
+      <section id="view-profile" data-view class="view-section hidden px-4 pb-6 pt-4 lg:px-0">
+        <div class="mx-4 grid gap-5 sm:mx-auto sm:max-w-[400px] lg:max-w-3xl lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:items-start">
+          <article class="rounded-3xl border border-stone-200 bg-white p-5 shadow-soft">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-semibold">Estado de sesión</h3>
+                <p class="text-sm text-stone-500">Información del usuario autenticado.</p>
+              </div>
+              <span id="activeRoleBadge" class="rounded-full bg-stone-900 px-3 py-1 text-xs font-semibold text-white">Usuario</span>
+            </div>
+            <div class="mt-4 space-y-2 text-sm text-stone-600">
+              <p><span class="font-medium text-stone-800">Estado:</span> <span id="loginStatusText">Sin sesión</span></p>
+              <p><span class="font-medium text-stone-800">Nombre:</span> <span id="sessionName">Invitado</span></p>
+              <p><span class="font-medium text-stone-800">Correo:</span> <span id="sessionEmail">Sin iniciar sesión</span></p>
+              <p><span class="font-medium text-stone-800">Acceso:</span> <span id="roleDescription">Explora la experiencia general de compra.</span></p>
+            </div>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <button
+                id="openRoleModalButton"
+                type="button"
+                class="rounded-2xl border border-stone-300 px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-100"
+              >
+                <span class="flex items-center gap-2">
+                  <i class="fa-solid fa-users-gear"></i>
+                  Cambiar rol
+                </span>
+              </button>
+              <button
+                id="logoutButton"
+                type="button"
+                class="rounded-2xl px-4 py-3 text-sm font-medium text-stone-500 transition hover:bg-stone-100 hover:text-stone-900"
+              >
+                <span class="flex items-center gap-2">
+                  <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                  Salir
+                </span>
+              </button>
+            </div>
+          </article>
+
+          <article id="inventoryPanel" class="hidden rounded-3xl border border-stone-200 bg-white p-5 shadow-soft">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-semibold">Inventario</h3>
+                <p class="text-sm text-stone-500">Vista exclusiva para el perfil administrador.</p>
+              </div>
+              <i class="fa-solid fa-boxes-stacked text-stone-400"></i>
+            </div>
+            <div id="inventoryList" class="mt-4 space-y-3"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Sección de inicio de sesión separada del perfil -->
+      <section id="view-login" data-view class="view-section hidden px-4 pb-6 pt-4 lg:px-0">
+        <div class="mx-4 space-y-5 sm:mx-auto sm:max-w-[400px]">
+          <article class="rounded-3xl border border-stone-200 bg-white p-5 shadow-soft">
+            <div class="border-b border-stone-200 pb-4">
+              <h2 class="text-lg font-semibold">Iniciar sesión</h2>
+              <p class="mt-1 text-sm text-stone-500">Accede como usuario, vendedor o administrador.</p>
+            </div>
+
+            <form id="loginForm" class="mt-5 space-y-4">
+              <div>
+                <label for="loginName" class="mb-2 block text-sm font-medium text-stone-700">Nombre o usuario</label>
+                <input
+                  id="loginName"
+                  type="text"
+                  placeholder="Ingresa tu nombre"
+                  class="w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-stone-500"
+                  required
+                >
+              </div>
+              <div>
+                <label for="loginEmail" class="mb-2 block text-sm font-medium text-stone-700">Correo electrónico</label>
+                <input
+                  id="loginEmail"
+                  type="email"
+                  placeholder="correo@parque100.com"
+                  class="w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-stone-500"
+                  required
+                >
+              </div>
+              <div>
+                <label for="loginPassword" class="mb-2 block text-sm font-medium text-stone-700">Contraseña</label>
+                <input
+                  id="loginPassword"
+                  type="password"
+                  placeholder="Ingresa tu contraseña"
+                  class="w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-stone-500"
+                  required
+                >
+              </div>
+              <div>
+                <label for="roleSelect" class="mb-2 block text-sm font-medium text-stone-700">Rol</label>
+                <select
+                  id="roleSelect"
+                  class="w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-stone-500"
+                >
+                  <option value="Usuario">Usuario</option>
+                  <option value="Vendedor">Vendedor</option>
+                  <option value="Administrador">Administrador</option>
+                </select>
+              </div>
+              <button
+                id="loginButton"
+                type="submit"
+                class="w-full rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-right-to-bracket"></i>
+                  Iniciar sesión
+                </span>
+              </button>
+            </form>
+          </article>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Barra de navegación inferior para el cambio de vistas -->
+    <nav class="fixed bottom-0 left-1/2 z-30 flex w-full max-w-screen-xl -translate-x-1/2 border-t border-stone-200 bg-white lg:hidden">
+      <button type="button" class="nav-button active-nav flex-1 px-3 py-3" data-target="home" aria-label="Inicio">
+        <span class="flex flex-col items-center gap-1 text-xs">
+          <i class="fa-solid fa-house text-lg"></i>
+          Inicio
+        </span>
+      </button>
+      <button type="button" class="nav-button flex-1 px-3 py-3" data-target="categories" aria-label="Categorías">
+        <span class="flex flex-col items-center gap-1 text-xs">
+          <i class="fa-solid fa-layer-group text-lg"></i>
+          Categorías
+        </span>
+      </button>
+      <button type="button" class="nav-button flex-1 px-3 py-3" data-target="cart" aria-label="Carrito">
+        <span class="flex flex-col items-center gap-1 text-xs">
+          <i class="fa-solid fa-cart-shopping text-lg"></i>
+          Carrito
+        </span>
+      </button>
+      <button type="button" class="nav-button flex-1 px-3 py-3" data-target="profile" aria-label="Perfil">
+        <span class="flex flex-col items-center gap-1 text-xs">
+          <i class="fa-solid fa-user-gear text-lg"></i>
+          Perfil
+        </span>
+      </button>
+      <button type="button" class="nav-button flex-1 px-3 py-3" data-target="login" aria-label="Iniciar sesión">
+        <span class="flex flex-col items-center gap-1 text-xs">
+          <i class="fa-solid fa-right-to-bracket text-lg"></i>
+          Iniciar sesión
+        </span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Modal de dirección para simular el paso de checkout -->
+  <div id="addressModal" class="fixed inset-0 z-40 hidden items-end justify-center bg-black/40 p-4 md:items-center">
+    <div id="modalBackdrop" class="absolute inset-0" aria-hidden="true"></div>
+    <div class="relative z-10 w-full max-w-md rounded-[2rem] bg-white p-6 shadow-soft">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-[0.35em] text-stone-500">Entrega</p>
+          <h3 class="mt-2 text-xl font-semibold">Dirección de envío</h3>
+        </div>
+        <button
+          id="closeModalButton"
+          type="button"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-stone-300 text-stone-600"
+          aria-label="Cerrar modal"
+        >
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <form class="mt-6 space-y-4">
+        <div>
+          <label for="towerSelect" class="mb-2 block text-sm font-medium text-stone-700">Torre</label>
+          <select id="towerSelect" class="w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-stone-500">
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+        <div>
+          <label for="floorInput" class="mb-2 block text-sm font-medium text-stone-700">Piso</label>
+          <input
+            id="floorInput"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            placeholder="Ingresa el numero de piso"
+            class="w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-stone-500"
+          >
+        </div>
+        <div>
+          <label for="apartmentInput" class="mb-2 block text-sm font-medium text-stone-700">Apartamento</label>
+          <input
+            id="apartmentInput"
+            type="text"
+            placeholder="Ejemplo: 402A"
+            class="w-full rounded-2xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm outline-none focus:border-stone-500"
+          >
+        </div>
+        <button
+          id="acceptAddressButton"
+          type="button"
+          class="w-full rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+        >
+          <span class="flex items-center justify-center gap-2">
+            <i class="fa-solid fa-circle-check"></i>
+            Aceptar
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para seleccionar el rol desde perfil -->
+  <div id="roleModal" class="fixed inset-0 z-40 hidden items-end justify-center bg-black/40 p-4 md:items-center">
+    <div id="roleModalBackdrop" class="absolute inset-0" aria-hidden="true"></div>
+    <div class="relative z-10 w-full max-w-2xl rounded-[2rem] bg-white p-6 shadow-soft">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs uppercase tracking-[0.35em] text-stone-500">Perfil</p>
+          <h3 class="mt-2 text-xl font-semibold">Selecciona un rol</h3>
+          <p class="mt-2 text-sm text-stone-500">El rol elegido actualiza la vista de perfil y queda listo en la ventana de inicio de sesión.</p>
+        </div>
+        <button
+          id="closeRoleModalButton"
+          type="button"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-stone-300 text-stone-600"
+          aria-label="Cerrar selector de rol"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+        <button
+          type="button"
+          class="role-button rounded-3xl border border-stone-300 px-5 py-5 text-left transition hover:bg-stone-100"
+          data-role="Usuario"
+        >
+          <span class="flex items-center gap-3 text-base font-semibold text-stone-900">
+            <i class="fa-solid fa-user"></i>
+            Usuario
+          </span>
+          <span class="mt-3 block text-sm text-stone-500">Compra productos y revisa el estado de tu cuenta.</span>
+        </button>
+        <button
+          type="button"
+          class="role-button rounded-3xl border border-stone-300 px-5 py-5 text-left transition hover:bg-stone-100"
+          data-role="Vendedor"
+        >
+          <span class="flex items-center gap-3 text-base font-semibold text-stone-900">
+            <i class="fa-solid fa-store"></i>
+            Vendedor
+          </span>
+          <span class="mt-3 block text-sm text-stone-500">Gestiona ventas, pedidos y seguimiento comercial.</span>
+        </button>
+        <button
+          type="button"
+          class="role-button rounded-3xl border border-stone-300 px-5 py-5 text-left transition hover:bg-stone-100"
+          data-role="Administrador"
+        >
+          <span class="flex items-center gap-3 text-base font-semibold text-stone-900">
+            <i class="fa-solid fa-user-shield"></i>
+            Administrador
+          </span>
+          <span class="mt-3 block text-sm text-stone-500">Supervisa inventario y configuracion general de la tienda.</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plantilla de estilos utilitarios puntuales para reforzar el prototipo -->
+  <style>
+    .nav-button {
+      color: #78716c;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-button.active-nav {
+      background-color: #1c1917;
+      color: #fafaf9;
+    }
+
+    .role-button.active-role {
+      background-color: #1c1917;
+      border-color: #1c1917;
+      color: #fafaf9;
+    }
+
+    .role-button.active-role span,
+    .role-button.active-role i {
+      color: inherit !important;
+    }
+
+  </style>
+
+  <!-- Lógica JavaScript para navegación, carrito, filtros y modales -->
+  <script>
+    const products = [
+      { id: 1, name: "Arroz integral", category: "Mercado", price: 6500, unit: "500 g", icon: "fa-wheat-awn" },
+      { id: 2, name: "Café molido", category: "Despensa", price: 14500, unit: "340 g", icon: "fa-mug-hot" },
+      { id: 3, name: "Leche deslactosada", category: "Lácteos", price: 5200, unit: "1 L", icon: "fa-bottle-water" },
+      { id: 4, name: "Pan artesanal", category: "Panadería", price: 7800, unit: "6 und", icon: "fa-bread-slice" },
+      { id: 5, name: "Yogur natural", category: "Lácteos", price: 4100, unit: "250 ml", icon: "fa-jar" },
+      { id: 6, name: "Galletas de avena", category: "Snacks", price: 5900, unit: "8 und", icon: "fa-cookie-bite" },
+      { id: 7, name: "Frutas mixtas", category: "Frutas", price: 9900, unit: "1 bandeja", icon: "fa-apple-whole" },
+      { id: 8, name: "Agua mineral", category: "Bebidas", price: 3200, unit: "600 ml", icon: "fa-glass-water" }
+    ];
+
+    const categories = [
+      { title: "Mercado", description: "Básicos para el hogar", icon: "fa-basket-shopping" },
+      { title: "Lácteos", description: "Frescos y refrigerados", icon: "fa-cheese" },
+      { title: "Panadería", description: "Hechos para el día", icon: "fa-bread-slice" },
+      { title: "Bebidas", description: "Opciones frías y calientes", icon: "fa-glass-water" }
+    ];
+
+    const roleProfiles = {
+      Usuario: {
+        name: "Residente Parque 100",
+        email: "usuario@parque100.com",
+        description: "Explora la experiencia general de compra."
+      },
+      Vendedor: {
+        name: "Asesor comercial Parque 100",
+        email: "ventas@parque100.com",
+        description: "Gestiona ventas, seguimiento y atencion de pedidos."
+      },
+      Administrador: {
+        name: "Administrador general Parque 100",
+        email: "admin@parque100.com",
+        description: "Controla inventario, catalogo y configuracion del sistema."
+      }
+    };
+
+    const state = {
+      activeView: "home",
+      cart: [
+        { id: 2, quantity: 1 },
+        { id: 4, quantity: 2 }
+      ],
+      role: "Usuario",
+      session: {
+        loggedIn: false,
+        name: "Invitado",
+        email: "",
+        role: "Usuario"
+      },
+      profilePreview: roleProfiles.Usuario,
+      query: ""
+    };
+
+    const SHIPPING_COST = 4000;
+
+    const currency = new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+      maximumFractionDigits: 0
+    });
+
+    const views = document.querySelectorAll("[data-view]");
+    const navButtons = document.querySelectorAll(".nav-button");
+    const roleButtons = document.querySelectorAll(".role-button");
+    const homeProducts = document.getElementById("homeProducts");
+    const categoriesGrid = document.getElementById("categoriesGrid");
+    const cartContent = document.getElementById("cartContent");
+    const inventoryList = document.getElementById("inventoryList");
+    const activeRoleBadge = document.getElementById("activeRoleBadge");
+    const roleDescription = document.getElementById("roleDescription");
+    const inventoryPanel = document.getElementById("inventoryPanel");
+    const loginForm = document.getElementById("loginForm");
+    const roleSelect = document.getElementById("roleSelect");
+    const loginStatusText = document.getElementById("loginStatusText");
+    const sessionName = document.getElementById("sessionName");
+    const sessionEmail = document.getElementById("sessionEmail");
+    const logoutButton = document.getElementById("logoutButton");
+    const openRoleModalButton = document.getElementById("openRoleModalButton");
+    const loginName = document.getElementById("loginName");
+    const loginEmail = document.getElementById("loginEmail");
+    const loginPassword = document.getElementById("loginPassword");
+    const headerCartCount = document.getElementById("headerCartCount");
+    const headerCartButton = document.getElementById("headerCartButton");
+    const continueButton = document.getElementById("continueButton");
+    const searchInput = document.getElementById("searchInput");
+    const searchResultLabel = document.getElementById("searchResultLabel");
+    const subtotalValue = document.getElementById("subtotalValue");
+    const totalValue = document.getElementById("totalValue");
+    const shippingValue = document.getElementById("shippingValue");
+    const addressModal = document.getElementById("addressModal");
+    const closeModalButton = document.getElementById("closeModalButton");
+    const acceptAddressButton = document.getElementById("acceptAddressButton");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const roleModal = document.getElementById("roleModal");
+    const roleModalBackdrop = document.getElementById("roleModalBackdrop");
+    const closeRoleModalButton = document.getElementById("closeRoleModalButton");
+
+    function getProductById(productId) {
+      return products.find((product) => product.id === productId);
+    }
+
+    function getCartDetailed() {
+      return state.cart.map((item) => {
+        const product = getProductById(item.id);
+        return {
+          ...product,
+          quantity: item.quantity,
+          lineTotal: product.price * item.quantity
+        };
+      });
+    }
+
+    function getSubtotal() {
+      return getCartDetailed().reduce((sum, item) => sum + item.lineTotal, 0);
+    }
+
+    function getShipping() {
+      return state.cart.length > 0 ? SHIPPING_COST : 0;
+    }
+
+    function toggleModal(element, isOpen) {
+      element.classList.toggle("hidden", !isOpen);
+      element.classList.toggle("flex", isOpen);
+    }
+
+    function setActiveView(viewName) {
+      const previousView = state.activeView;
+      state.activeView = viewName;
+      views.forEach((view) => {
+        view.classList.toggle("hidden", view.id !== `view-${viewName}`);
+      });
+
+      navButtons.forEach((button) => {
+        button.classList.toggle("active-nav", button.dataset.target === viewName);
+      });
+
+      if (viewName === "profile" && previousView !== "profile") {
+        openRoleModal();
+      }
+    }
+
+    function addToCart(productId) {
+      const existingItem = state.cart.find((item) => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        state.cart.push({ id: productId, quantity: 1 });
+      }
+      renderCart();
+      renderProducts();
+    }
+
+    function updateQuantity(productId, delta) {
+      const item = state.cart.find((cartItem) => cartItem.id === productId);
+      if (!item) return;
+
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        state.cart = state.cart.filter((cartItem) => cartItem.id !== productId);
+      }
+      renderCart();
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const normalizedQuery = state.query.toLowerCase();
+      const filteredProducts = products.filter((product) => {
+        const content = `${product.name} ${product.category}`.toLowerCase();
+        return content.includes(normalizedQuery);
+      });
+
+      searchResultLabel.textContent = `${filteredProducts.length} producto${filteredProducts.length === 1 ? "" : "s"}`;
+
+      homeProducts.innerHTML = filteredProducts.map((product) => {
+        const cartItem = state.cart.find((item) => item.id === product.id);
+        return `
+          <article class="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-200 text-stone-700">
+                <i class="fa-solid ${product.icon}"></i>
+              </div>
+              <span class="rounded-full bg-stone-100 px-3 py-1 text-[11px] font-medium text-stone-500">${product.category}</span>
+            </div>
+            <h3 class="mt-4 text-base font-semibold">${product.name}</h3>
+            <p class="mt-1 text-sm text-stone-500">${product.unit}</p>
+            <div class="mt-4 flex items-center justify-between">
+              <div>
+                <p class="text-lg font-semibold">${currency.format(product.price)}</p>
+                <p class="text-xs text-stone-400">${cartItem ? `En carrito: ${cartItem.quantity}` : "Disponible"}</p>
+              </div>
+              <button
+                type="button"
+                class="rounded-2xl bg-stone-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-stone-700"
+                onclick="addToCart(${product.id})"
+              >
+                <span class="flex items-center gap-2">
+                  <i class="fa-solid fa-cart-plus"></i>
+                  Añadir
+                </span>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      if (!filteredProducts.length) {
+        homeProducts.innerHTML = `
+          <article class="col-span-full rounded-3xl border border-dashed border-stone-300 bg-white p-6 text-center">
+            <i class="fa-solid fa-box-open text-2xl text-stone-400"></i>
+            <h3 class="mt-3 text-base font-semibold">Sin coincidencias</h3>
+            <p class="mt-2 text-sm text-stone-500">Prueba con otro nombre o categoría.</p>
+          </article>
+        `;
+      }
+    }
+
+    function renderCategories() {
+      categoriesGrid.innerHTML = categories.map((category) => `
+        <article class="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-900 text-white">
+            <i class="fa-solid ${category.icon}"></i>
+          </div>
+          <h3 class="mt-4 text-base font-semibold">${category.title}</h3>
+          <p class="mt-1 text-sm text-stone-500">${category.description}</p>
+          <button
+            type="button"
+            class="mt-4 rounded-2xl border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:bg-stone-100"
+            onclick="filterByCategory('${category.title}')"
+          >
+            <span class="flex items-center gap-2">
+              <i class="fa-solid fa-arrow-right"></i>
+              Ver productos
+            </span>
+          </button>
+        </article>
+      `).join("");
+    }
+
+    function renderCart() {
+      const detailedCart = getCartDetailed();
+      const subtotal = getSubtotal();
+      const shipping = getShipping();
+      const total = subtotal + shipping;
+      const count = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+
+      headerCartCount.textContent = count;
+      subtotalValue.textContent = currency.format(subtotal);
+      shippingValue.textContent = currency.format(shipping);
+      totalValue.textContent = currency.format(total);
+      continueButton.disabled = detailedCart.length === 0;
+      continueButton.classList.toggle("opacity-50", detailedCart.length === 0);
+      continueButton.classList.toggle("cursor-not-allowed", detailedCart.length === 0);
+
+      if (!detailedCart.length) {
+        cartContent.innerHTML = `
+          <article class="rounded-3xl border border-dashed border-stone-300 bg-white p-6 text-center">
+            <i class="fa-solid fa-cart-plus text-2xl text-stone-400"></i>
+            <h3 class="mt-3 text-base font-semibold">Tu carrito esta vacio</h3>
+            <p class="mt-2 text-sm text-stone-500">Agrega productos desde inicio para continuar.</p>
+          </article>
+        `;
+        return;
+      }
+
+      cartContent.innerHTML = detailedCart.map((item) => `
+        <article class="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-start gap-3">
+              <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-200 text-stone-700">
+                <i class="fa-solid ${item.icon}"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-semibold">${item.name}</h3>
+                <p class="text-sm text-stone-500">${item.unit}</p>
+                <p class="mt-2 text-sm font-medium text-stone-700">${currency.format(item.lineTotal)}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-500"
+              onclick="updateQuantity(${item.id}, -${item.quantity})"
+            >
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-trash-can"></i>
+                Quitar
+              </span>
+            </button>
+          </div>
+          <div class="mt-4 flex items-center justify-between">
+            <span class="text-sm text-stone-500">Cantidad</span>
+            <div class="flex items-center gap-2">
+              <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-stone-300 text-stone-700 transition hover:bg-stone-100" aria-label="Menos" onclick="updateQuantity(${item.id}, -1)">
+                <i class="fa-solid fa-minus text-xs" aria-hidden="true"></i>
+              </button>
+              <span class="w-8 text-center text-sm font-semibold">${item.quantity}</span>
+              <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-stone-300 text-stone-700 transition hover:bg-stone-100" aria-label="Más" onclick="updateQuantity(${item.id}, 1)">
+                <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderInventory() {
+      inventoryList.innerHTML = products.map((product) => `
+        <article class="flex items-center justify-between rounded-2xl border border-stone-200 bg-stone-50 p-4">
+          <div>
+            <h4 class="text-sm font-semibold">${product.name}</h4>
+            <p class="text-xs text-stone-500">${product.category} · ${currency.format(product.price)}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" class="rounded-xl border border-stone-300 px-3 py-2 text-xs font-medium text-stone-700">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Editar
+              </span>
+            </button>
+            <button type="button" class="rounded-xl bg-stone-900 px-3 py-2 text-xs font-medium text-white">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-trash-can"></i>
+                Eliminar
+              </span>
+            </button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function syncRoleSelect(role) {
+      if (roleSelect) {
+        roleSelect.value = role;
+      }
+    }
+
+    function syncLoginFormWithRole(role) {
+      const profileData = roleProfiles[role];
+      if (!profileData) return;
+
+      syncRoleSelect(role);
+      loginName.value = profileData.name;
+      loginEmail.value = profileData.email;
+      loginPassword.value = "";
+    }
+
+    function renderSession() {
+      const { loggedIn, name, email, role } = state.session;
+      const profileData = state.profilePreview;
+      loginStatusText.textContent = loggedIn ? "Sesión activa" : "Vista previa del rol";
+      sessionName.textContent = loggedIn ? name : profileData.name;
+      sessionEmail.textContent = loggedIn ? email : profileData.email;
+      roleDescription.textContent = profileData.description;
+      syncRoleSelect(role);
+    }
+
+    function setRole(role) {
+      state.role = role;
+      state.session.role = role;
+      state.profilePreview = roleProfiles[role];
+      activeRoleBadge.textContent = role;
+      inventoryPanel.classList.toggle("hidden", role !== "Administrador");
+      roleButtons.forEach((button) => {
+        button.classList.toggle("active-role", button.dataset.role === role);
+      });
+      syncLoginFormWithRole(role);
+      renderSession();
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const name = loginName.value.trim();
+      const email = loginEmail.value.trim();
+      const password = loginPassword.value.trim();
+      const role = roleSelect.value;
+
+      if (!name || !email || !password) {
+        return;
+      }
+
+      state.session = {
+        loggedIn: true,
+        name,
+        email,
+        role
+      };
+
+      setRole(role);
+      setActiveView("profile");
+    }
+
+    function handleLogout() {
+      state.session = {
+        loggedIn: false,
+        name: "Invitado",
+        email: "",
+        role: "Usuario"
+      };
+      loginForm.reset();
+      setRole("Usuario");
+    }
+
+    function openModal() {
+      if (!state.cart.length) return;
+      toggleModal(addressModal, true);
+    }
+
+    function closeModal() {
+      toggleModal(addressModal, false);
+    }
+
+    function openRoleModal() {
+      toggleModal(roleModal, true);
+    }
+
+    function closeRoleModal() {
+      toggleModal(roleModal, false);
+    }
+
+    function filterByCategory(category) {
+      state.query = category;
+      searchInput.value = category;
+      setActiveView("home");
+      renderProducts();
+    }
+
+    navButtons.forEach((button) => {
+      button.addEventListener("click", () => setActiveView(button.dataset.target));
+    });
+
+    roleButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setRole(button.dataset.role);
+        closeRoleModal();
+      });
+    });
+
+    loginForm.addEventListener("submit", handleLogin);
+    logoutButton.addEventListener("click", handleLogout);
+    openRoleModalButton.addEventListener("click", openRoleModal);
+    headerCartButton.addEventListener("click", () => setActiveView("cart"));
+    continueButton.addEventListener("click", openModal);
+    closeModalButton.addEventListener("click", closeModal);
+    acceptAddressButton.addEventListener("click", closeModal);
+    modalBackdrop.addEventListener("click", closeModal);
+    closeRoleModalButton.addEventListener("click", closeRoleModal);
+    roleModalBackdrop.addEventListener("click", closeRoleModal);
+
+    searchInput.addEventListener("input", (event) => {
+      state.query = event.target.value.trim();
+      renderProducts();
+    });
+
+    renderProducts();
+    renderCategories();
+    renderCart();
+    renderInventory();
+    renderSession();
+    setRole("Usuario");
+    setActiveView("home");
+
+    window.addToCart = addToCart;
+    window.updateQuantity = updateQuantity;
+    window.filterByCategory = filterByCategory;
+  </script>
+</body>
+</html>

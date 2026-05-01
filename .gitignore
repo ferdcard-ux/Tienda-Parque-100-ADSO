@@ -1,0 +1,8 @@
+.vscode/
+node_modules/
+.codex
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
