@@ -60,7 +60,7 @@ El archivo principal contiene toda la lógica necesaria para el prototipo:
 ---
 
 ## Autores
-**Miguel Fernando Cárdenas Alvear, Brandon Vergara **  
+**Miguel Fernando Cárdenas Alvear, Brandon Vergara, David Pardo**  
 *Aprendices SENA - ADSO*
 *Ficha: 3235894  *
 *Barranquilla, Colombia*
